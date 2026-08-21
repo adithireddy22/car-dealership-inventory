@@ -733,7 +733,7 @@ A detailed test report will be added after the test suite is implemented.
 The AI assistance from chatgpt included:
 
 - Project setup guidance and initialization
-- Postgre and fastapi - postgre connection setup
+- fastapi - postgre connection setup
 
 ---
 
