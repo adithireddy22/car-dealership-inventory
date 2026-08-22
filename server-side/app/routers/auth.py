@@ -7,6 +7,15 @@ from app.database import get_db
 from app.models.user import User
 from app.schemas.auth import RegisterRequest, RegisterResponse
 
+from app.core.security import hash_password, verify_password
+
+from app.schemas.auth import (
+    LoginRequest,
+    RegisterRequest,
+    RegisterResponse,
+    TokenResponse,
+)
+
 
 router = APIRouter(
     prefix="/api/auth",
@@ -55,3 +64,29 @@ def register(
     db.refresh(user)
 
     return user
+
+@router.post(
+    "/login",
+    response_model=TokenResponse,
+)
+def login(
+    user_data: LoginRequest,
+    db: Session = Depends(get_db),
+):
+    user = db.scalar(
+        select(User).where(User.email == user_data.email)
+    )
+
+    if not user or not verify_password(
+        user_data.password,
+        user.password_hash,
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password",
+        )
+
+    return {
+        "access_token": "temporary-token",
+        "token_type": "bearer",
+    }
