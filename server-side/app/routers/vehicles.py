@@ -1,4 +1,6 @@
+from decimal import Decimal
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -46,14 +48,34 @@ def create_vehicle(
     response_model=list[VehicleResponse],
 )
 def list_vehicles(
+    make: str | None = None,
+    model: str | None = None,
+    category: str | None = None,
+    min_price: Decimal | None = None,
+    max_price: Decimal | None = None,
     db: Session = Depends(get_db),
 ):
-    vehicles = db.scalars(
-        select(Vehicle)
-    ).all()
+    query = select(Vehicle)
+
+    if make is not None:
+        query = query.where(Vehicle.make == make)
+
+    if model is not None:
+        query = query.where(Vehicle.model == model)
+
+    if category is not None:
+        query = query.where(Vehicle.category == category)
+
+    if min_price is not None:
+        query = query.where(Vehicle.price >= min_price)
+
+    if max_price is not None:
+        query = query.where(Vehicle.price <= max_price)
+
+    vehicles = db.scalars(query).all()
 
     return vehicles
-
+  
 
 @router.get(
     "/{vehicle_id}",
@@ -72,6 +94,7 @@ def get_vehicle(
         )
 
     return vehicle
+
 
 @router.put(
     "/{vehicle_id}",
