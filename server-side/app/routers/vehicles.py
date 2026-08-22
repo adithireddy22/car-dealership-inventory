@@ -99,3 +99,21 @@ def update_vehicle(
     db.refresh(vehicle)
 
     return vehicle
+
+@router.delete("/{vehicle_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_vehicle(
+    vehicle_id: int,
+    db: Session = Depends(get_db),
+):
+    vehicle = db.scalar(
+        select(Vehicle).where(Vehicle.id == vehicle_id)
+    )
+
+    if vehicle is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Vehicle not found",
+        )
+
+    db.delete(vehicle)
+    db.commit()
