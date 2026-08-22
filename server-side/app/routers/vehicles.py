@@ -73,7 +73,6 @@ def get_vehicle(
 
     return vehicle
 
-
 @router.put(
     "/{vehicle_id}",
     response_model=VehicleResponse,
@@ -91,17 +90,15 @@ def update_vehicle(
             detail="Vehicle not found",
         )
 
-    vehicle.make = vehicle_data.make
-    vehicle.model = vehicle_data.model
-    vehicle.category = vehicle_data.category
-    vehicle.price = vehicle_data.price
-    vehicle.quantity = vehicle_data.quantity
+    update_data = vehicle_data.model_dump(exclude_unset=True)
+
+    for field, value in update_data.items():
+        setattr(vehicle, field, value)
 
     db.commit()
     db.refresh(vehicle)
 
     return vehicle
-
 
 @router.delete(
     "/{vehicle_id}",
