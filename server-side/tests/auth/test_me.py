@@ -65,7 +65,7 @@ def test_get_current_user():
 
     assert data["username"] == "meuser"
     assert data["email"] == "me@example.com"
-    assert data["role"] == "user"
+    assert data["role"] == "USER"
 
     assert "password" not in data
     assert "password_hash" not in data

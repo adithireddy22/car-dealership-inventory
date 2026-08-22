@@ -1,34 +1,38 @@
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from enum import Enum
 
+from sqlalchemy import Column, Integer, String, Enum as SQLEnum
 from app.database import Base
+
+
+class UserRole(str, Enum):
+    USER = "USER"
+    ADMIN = "ADMIN"
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
 
-    username: Mapped[str] = mapped_column(
-        String(50),
+    username = Column(
+        String,
         unique=True,
         nullable=False,
     )
 
-    email: Mapped[str] = mapped_column(
-        String(255),
+    email = Column(
+        String,
         unique=True,
-        index=True,
         nullable=False,
     )
 
-    password_hash: Mapped[str] = mapped_column(
-        String(255),
+    password_hash = Column(
+        String,
         nullable=False,
     )
 
-    role: Mapped[str] = mapped_column(
-        String(20),
-        default="user",
+    role = Column(
+        SQLEnum(UserRole, name="userrole"),
         nullable=False,
+        default=UserRole.USER,
     )

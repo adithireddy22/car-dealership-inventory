@@ -1,4 +1,16 @@
-from app.models.user import User
+from app.models.user import User, UserRole
+
+import pytest
+from sqlalchemy.exc import IntegrityError
+
+
+def test_user_role_enum_values():
+    assert UserRole.USER.value == "USER"
+    assert UserRole.ADMIN.value == "ADMIN"
+
+
+def test_user_default_role_is_user():
+    assert User.__table__.c.role.default.arg == UserRole.USER
 
 
 def test_create_user():
@@ -6,17 +18,17 @@ def test_create_user():
         username="adithi",
         email="adithi@example.com",
         password_hash="hashed_password",
-        role="user",
+        role=UserRole.USER,
     )
 
     assert user.username == "adithi"
     assert user.email == "adithi@example.com"
     assert user.password_hash == "hashed_password"
-    assert user.role == "user"
+    assert user.role == UserRole.USER
 
 
 def test_user_default_role():
-    assert User.__table__.c.role.default.arg == "user"
+    assert User.__table__.c.role.default.arg == UserRole.USER
 
 
 def test_save_user_to_database(db_session):
@@ -32,10 +44,7 @@ def test_save_user_to_database(db_session):
 
     assert user.id is not None
     assert user.username == "databaseuser"
-    assert user.role == "user"
-
-import pytest
-from sqlalchemy.exc import IntegrityError
+    assert user.role == UserRole.USER
 
 
 def test_username_must_be_unique(db_session):
@@ -61,6 +70,7 @@ def test_username_must_be_unique(db_session):
 
     db_session.rollback()
 
+
 def test_email_must_be_unique(db_session):
     user1 = User(
         username="user1",
@@ -83,6 +93,7 @@ def test_email_must_be_unique(db_session):
         db_session.commit()
 
     db_session.rollback()
+
 
 def test_username_is_required(db_session):
     user = User(
