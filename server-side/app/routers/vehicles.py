@@ -185,3 +185,30 @@ def delete_vehicle(
     db.commit()
 
     return None
+
+@router.post(
+    "/{vehicle_id}/restock",
+    response_model=InventoryResponse,
+)
+def restock_vehicle(
+    vehicle_id: int,
+    restock_data: InventoryQuantity,
+    db: Session = Depends(get_db),
+):
+    vehicle = db.get(Vehicle, vehicle_id)
+
+    if vehicle is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Vehicle not found",
+        )
+
+    vehicle.quantity += restock_data.quantity
+
+    db.commit()
+    db.refresh(vehicle)
+
+    return {
+        "message": "Vehicle restocked successfully",
+        "vehicle": vehicle,
+    }
