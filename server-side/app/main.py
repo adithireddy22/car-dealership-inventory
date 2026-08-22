@@ -2,12 +2,17 @@ from fastapi import FastAPI
 from sqlalchemy import text
 
 from app.database import engine
+from app.routers.auth import router as auth_router
+
 
 app = FastAPI(
     title="Car Dealership Inventory API",
     description="Backend API for managing dealership vehicle inventory",
     version="1.0.0",
 )
+
+
+app.include_router(auth_router)
 
 
 @app.get("/")
