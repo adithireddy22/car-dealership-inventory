@@ -27,7 +27,7 @@ class VehicleResponse(BaseModel):
     make: str
     model: str
     category: str
-    price: Decimal
+    price: float
     quantity: int
     created_at: datetime
     updated_at: datetime

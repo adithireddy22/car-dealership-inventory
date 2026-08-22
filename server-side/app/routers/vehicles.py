@@ -4,7 +4,12 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.vehicle import Vehicle
-from app.schemas.vehicle import VehicleUpdate
+from app.schemas.vehicle import (
+    VehicleCreate,
+    VehicleResponse,
+    VehicleUpdate,
+)
+
 
 router = APIRouter(
     prefix="/api/vehicles",
@@ -14,18 +19,19 @@ router = APIRouter(
 
 @router.post(
     "",
+    response_model=VehicleResponse,
     status_code=status.HTTP_201_CREATED,
 )
 def create_vehicle(
-    vehicle_data: dict,
+    vehicle_data: VehicleCreate,
     db: Session = Depends(get_db),
 ):
     vehicle = Vehicle(
-        make=vehicle_data["make"],
-        model=vehicle_data["model"],
-        category=vehicle_data["category"],
-        price=vehicle_data["price"],
-        quantity=vehicle_data["quantity"],
+        make=vehicle_data.make,
+        model=vehicle_data.model,
+        category=vehicle_data.category,
+        price=vehicle_data.price,
+        quantity=vehicle_data.quantity,
     )
 
     db.add(vehicle)
@@ -35,7 +41,10 @@ def create_vehicle(
     return vehicle
 
 
-@router.get("")
+@router.get(
+    "",
+    response_model=list[VehicleResponse],
+)
 def list_vehicles(
     db: Session = Depends(get_db),
 ):
@@ -46,14 +55,15 @@ def list_vehicles(
     return vehicles
 
 
-@router.get("/{vehicle_id}")
+@router.get(
+    "/{vehicle_id}",
+    response_model=VehicleResponse,
+)
 def get_vehicle(
     vehicle_id: int,
     db: Session = Depends(get_db),
 ):
-    vehicle = db.scalar(
-        select(Vehicle).where(Vehicle.id == vehicle_id)
-    )
+    vehicle = db.get(Vehicle, vehicle_id)
 
     if vehicle is None:
         raise HTTPException(
@@ -64,15 +74,16 @@ def get_vehicle(
     return vehicle
 
 
-@router.put("/{vehicle_id}")
+@router.put(
+    "/{vehicle_id}",
+    response_model=VehicleResponse,
+)
 def update_vehicle(
     vehicle_id: int,
     vehicle_data: VehicleUpdate,
     db: Session = Depends(get_db),
 ):
-    vehicle = db.scalar(
-        select(Vehicle).where(Vehicle.id == vehicle_id)
-    )
+    vehicle = db.get(Vehicle, vehicle_id)
 
     if vehicle is None:
         raise HTTPException(
@@ -80,34 +91,27 @@ def update_vehicle(
             detail="Vehicle not found",
         )
 
-    if vehicle_data.make is not None:
-        vehicle.make = vehicle_data.make
-
-    if vehicle_data.model is not None:
-        vehicle.model = vehicle_data.model
-
-    if vehicle_data.category is not None:
-        vehicle.category = vehicle_data.category
-
-    if vehicle_data.price is not None:
-        vehicle.price = vehicle_data.price
-
-    if vehicle_data.quantity is not None:
-        vehicle.quantity = vehicle_data.quantity
+    vehicle.make = vehicle_data.make
+    vehicle.model = vehicle_data.model
+    vehicle.category = vehicle_data.category
+    vehicle.price = vehicle_data.price
+    vehicle.quantity = vehicle_data.quantity
 
     db.commit()
     db.refresh(vehicle)
 
     return vehicle
 
-@router.delete("/{vehicle_id}", status_code=status.HTTP_204_NO_CONTENT)
+
+@router.delete(
+    "/{vehicle_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 def delete_vehicle(
     vehicle_id: int,
     db: Session = Depends(get_db),
 ):
-    vehicle = db.scalar(
-        select(Vehicle).where(Vehicle.id == vehicle_id)
-    )
+    vehicle = db.get(Vehicle, vehicle_id)
 
     if vehicle is None:
         raise HTTPException(
@@ -117,3 +121,5 @@ def delete_vehicle(
 
     db.delete(vehicle)
     db.commit()
+
+    return None
