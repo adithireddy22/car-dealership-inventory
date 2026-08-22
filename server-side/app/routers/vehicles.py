@@ -7,6 +7,8 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.vehicle import Vehicle
 from app.schemas.vehicle import (
+    InventoryQuantity,
+    InventoryResponse,
     VehicleCreate,
     VehicleResponse,
     VehicleUpdate,
@@ -100,6 +102,40 @@ def get_vehicle(
         )
 
     return vehicle
+
+
+@router.post(
+    "/{vehicle_id}/purchase",
+    response_model=InventoryResponse,
+)
+def purchase_vehicle(
+    vehicle_id: int,
+    purchase_data: InventoryQuantity,
+    db: Session = Depends(get_db),
+):
+    vehicle = db.get(Vehicle, vehicle_id)
+
+    if vehicle is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Vehicle not found",
+        )
+
+    if purchase_data.quantity > vehicle.quantity:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Insufficient vehicle quantity",
+        )
+
+    vehicle.quantity -= purchase_data.quantity
+
+    db.commit()
+    db.refresh(vehicle)
+
+    return {
+        "message": "Vehicle purchased successfully",
+        "vehicle": vehicle,
+    }
 
 
 @router.put(

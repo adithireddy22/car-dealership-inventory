@@ -19,6 +19,9 @@ class VehicleUpdate(BaseModel):
     price: Decimal | None = Field(default=None, gt=0)
     quantity: int | None = Field(default=None, ge=0)
 
+class InventoryQuantity(BaseModel):
+    quantity: int = Field(gt=0)
+
 
 class VehicleResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -31,3 +34,7 @@ class VehicleResponse(BaseModel):
     quantity: int
     created_at: datetime
     updated_at: datetime
+
+class InventoryResponse(BaseModel):
+    message: str
+    vehicle: VehicleResponse
