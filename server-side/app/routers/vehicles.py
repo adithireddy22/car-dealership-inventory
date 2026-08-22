@@ -53,6 +53,8 @@ def list_vehicles(
     category: str | None = None,
     min_price: Decimal | None = None,
     max_price: Decimal | None = None,
+    page: int = 1,
+    limit: int = 10,
     db: Session = Depends(get_db),
 ):
     query = select(Vehicle)
@@ -71,6 +73,10 @@ def list_vehicles(
 
     if max_price is not None:
         query = query.where(Vehicle.price <= max_price)
+
+    offset = (page - 1) * limit
+
+    query = query.offset(offset).limit(limit)
 
     vehicles = db.scalars(query).all()
 
