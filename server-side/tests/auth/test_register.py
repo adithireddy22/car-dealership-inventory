@@ -10,6 +10,7 @@ def test_register_user():
     response = client.post(
         "/api/auth/register",
         json={
+            "username": "testuser",
             "email": "test@example.com",
             "password": "Test@123",
         },
@@ -19,4 +20,7 @@ def test_register_user():
 
     data = response.json()
 
+    assert data["username"] == "testuser"
     assert data["email"] == "test@example.com"
+    assert "password" not in data
+    assert "password_hash" not in data

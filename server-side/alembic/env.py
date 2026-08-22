@@ -13,6 +13,7 @@ from sqlalchemy import engine_from_config, pool
 from app.database import Base
 from app.models.user import User
 from app.models.vehicle import Vehicle
+target_metadata = Base.metadata
 
 load_dotenv()
 
@@ -72,7 +73,7 @@ def run_migrations_online() -> None:
     database_url = os.getenv("NEW_DATABASE_URL")
 
     if not database_url:
-        raise ValueError("DATABASE_URL is not set")
+        raise ValueError("NEW_DATABASE_URL is not set")
 
     config.set_main_option("sqlalchemy.url", database_url)
 
