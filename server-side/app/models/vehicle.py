@@ -1,6 +1,5 @@
 from datetime import UTC, datetime
 
-from sqlalchemy import DateTime, Numeric, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base
