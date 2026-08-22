@@ -7,16 +7,16 @@ import {
 
 import Login from './pages/Login'
 import Register from './pages/Register'
+import AddVehicle from './pages/AddVehicle'
+import VehicleList from './pages/VehicleList'
+import VehicleDetails from './pages/VehicleDetails'
+
 import ProtectedRoute from './routes/ProtectedRoute'
 
 import { useAuth } from './context/AuthContext'
 
 function Dashboard() {
   const { user, logout } = useAuth()
-
-  const handleLogout = () => {
-    logout()
-  }
 
   return (
     <div>
@@ -40,7 +40,7 @@ function Dashboard() {
         </div>
       )}
 
-      <button onClick={handleLogout}>
+      <button onClick={logout}>
         Logout
       </button>
     </div>
@@ -64,13 +64,46 @@ function App() {
           element={<Register />}
         />
 
-        {/* Protected route */}
+        {/* Protected Dashboard */}
 
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protected Vehicle List */}
+
+        <Route
+          path="/vehicles"
+          element={
+            <ProtectedRoute>
+              <VehicleList />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protected Add Vehicle */}
+
+        <Route
+          path="/vehicles/add"
+          element={
+            <ProtectedRoute>
+              <AddVehicle />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protected Vehicle Details */}
+
+        <Route
+          path="/vehicles/:vehicleId"
+          element={
+            <ProtectedRoute>
+              <VehicleDetails />
             </ProtectedRoute>
           }
         />

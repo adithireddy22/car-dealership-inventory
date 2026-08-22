@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+
 import {
   getCurrentUser,
   loginUser,
@@ -30,10 +31,12 @@ export function AuthProvider({ children }) {
       try {
         const currentUser = await getCurrentUser()
 
+        setToken(storedToken)
         setUser(currentUser)
       } catch (error) {
-        localStorage.removeItem('access_token')
+        console.error('Authentication check failed:', error)
 
+        localStorage.removeItem('access_token')
         setToken(null)
         setUser(null)
       } finally {
