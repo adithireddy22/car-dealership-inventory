@@ -50,3 +50,4 @@ def test_login_user():
 
     assert "access_token" in data
     assert data["token_type"] == "bearer"
+    assert len(data["access_token"]) > 0

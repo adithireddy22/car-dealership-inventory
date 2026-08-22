@@ -7,7 +7,11 @@ from app.database import get_db
 from app.models.user import User
 from app.schemas.auth import RegisterRequest, RegisterResponse
 
-from app.core.security import hash_password, verify_password
+from app.core.security import (
+    create_access_token,
+    hash_password,
+    verify_password,
+)
 
 from app.schemas.auth import (
     LoginRequest,
@@ -86,7 +90,13 @@ def login(
             detail="Invalid email or password",
         )
 
+    access_token = create_access_token(
+    data={
+        "sub": str(user.id),
+    }
+)
+
     return {
-        "access_token": "temporary-token",
+        "access_token": access_token,
         "token_type": "bearer",
     }
