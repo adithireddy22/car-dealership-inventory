@@ -64,3 +64,27 @@ def test_register_duplicate_email():
 
     assert response.status_code == 409
     assert response.json()["detail"] == "Email already registered"
+
+def test_register_duplicate_username():
+    cleanup_users()
+
+    client.post(
+        "/api/auth/register",
+        json={
+            "username": "sameuser",
+            "email": "first@example.com",
+            "password": "Test@123",
+        },
+    )
+
+    response = client.post(
+        "/api/auth/register",
+        json={
+            "username": "sameuser",
+            "email": "second@example.com",
+            "password": "Test@456",
+        },
+    )
+
+    assert response.status_code == 409
+    assert response.json()["detail"] == "Username already registered"
