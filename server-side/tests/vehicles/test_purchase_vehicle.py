@@ -5,9 +5,10 @@ from app.main import app
 client = TestClient(app)
 
 
-def test_purchase_vehicle():
+def test_purchase_vehicle(admin_headers, user_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -23,6 +24,7 @@ def test_purchase_vehicle():
 
     response = client.post(
         f"/api/vehicles/{vehicle_id}/purchase",
+        headers=user_headers,
         json={
             "quantity": 2,
         },
@@ -38,9 +40,11 @@ def test_purchase_vehicle():
     assert data["vehicle"]["model"] == "Camry"
     assert data["vehicle"]["quantity"] == 3
 
-def test_purchase_entire_vehicle_quantity():
+
+def test_purchase_entire_vehicle_quantity(admin_headers, user_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Honda",
             "model": "Civic",
@@ -56,6 +60,7 @@ def test_purchase_entire_vehicle_quantity():
 
     response = client.post(
         f"/api/vehicles/{vehicle_id}/purchase",
+        headers=user_headers,
         json={
             "quantity": 5,
         },
@@ -69,9 +74,11 @@ def test_purchase_entire_vehicle_quantity():
     assert data["vehicle"]["id"] == vehicle_id
     assert data["vehicle"]["quantity"] == 0
 
-def test_purchase_more_than_available_quantity():
+
+def test_purchase_more_than_available_quantity(admin_headers, user_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Honda",
             "model": "Accord",
@@ -87,6 +94,7 @@ def test_purchase_more_than_available_quantity():
 
     response = client.post(
         f"/api/vehicles/{vehicle_id}/purchase",
+        headers=user_headers,
         json={
             "quantity": 5,
         },
@@ -102,9 +110,11 @@ def test_purchase_more_than_available_quantity():
     assert get_response.status_code == 200
     assert get_response.json()["quantity"] == 3
 
-def test_purchase_zero_quantity():
+
+def test_purchase_zero_quantity(admin_headers, user_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Corolla",
@@ -120,6 +130,7 @@ def test_purchase_zero_quantity():
 
     response = client.post(
         f"/api/vehicles/{vehicle_id}/purchase",
+        headers=user_headers,
         json={
             "quantity": 0,
         },
@@ -134,9 +145,11 @@ def test_purchase_zero_quantity():
     assert get_response.status_code == 200
     assert get_response.json()["quantity"] == 5
 
-def test_purchase_negative_quantity():
+
+def test_purchase_negative_quantity(admin_headers, user_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Hyundai",
             "model": "Creta",
@@ -152,6 +165,7 @@ def test_purchase_negative_quantity():
 
     response = client.post(
         f"/api/vehicles/{vehicle_id}/purchase",
+        headers=user_headers,
         json={
             "quantity": -2,
         },
@@ -166,9 +180,11 @@ def test_purchase_negative_quantity():
     assert get_response.status_code == 200
     assert get_response.json()["quantity"] == 5
 
-def test_purchase_vehicle_not_found():
+
+def test_purchase_vehicle_not_found(user_headers):
     response = client.post(
         "/api/vehicles/999999/purchase",
+        headers=user_headers,
         json={
             "quantity": 2,
         },
@@ -177,9 +193,11 @@ def test_purchase_vehicle_not_found():
     assert response.status_code == 404
     assert response.json()["detail"] == "Vehicle not found"
 
-def test_purchase_vehicle_updates_updated_at():
+
+def test_purchase_vehicle_updates_updated_at(admin_headers, user_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Fortuner",
@@ -197,6 +215,7 @@ def test_purchase_vehicle_updates_updated_at():
 
     response = client.post(
         f"/api/vehicles/{vehicle_id}/purchase",
+        headers=user_headers,
         json={
             "quantity": 2,
         },

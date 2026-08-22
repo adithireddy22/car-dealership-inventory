@@ -5,9 +5,10 @@ from app.main import app
 client = TestClient(app)
 
 
-def test_create_vehicle_with_zero_price():
+def test_create_vehicle_with_zero_price(admin_headers):
     response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -20,9 +21,10 @@ def test_create_vehicle_with_zero_price():
     assert response.status_code == 422
 
 
-def test_create_vehicle_with_negative_price():
+def test_create_vehicle_with_negative_price(admin_headers):
     response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -35,9 +37,10 @@ def test_create_vehicle_with_negative_price():
     assert response.status_code == 422
 
 
-def test_create_vehicle_with_negative_quantity():
+def test_create_vehicle_with_negative_quantity(admin_headers):
     response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -50,9 +53,10 @@ def test_create_vehicle_with_negative_quantity():
     assert response.status_code == 422
 
 
-def test_create_vehicle_with_missing_make():
+def test_create_vehicle_with_missing_make(admin_headers):
     response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "model": "Camry",
             "category": "Sedan",

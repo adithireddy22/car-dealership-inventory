@@ -5,9 +5,10 @@ from app.main import app
 client = TestClient(app)
 
 
-def test_restock_vehicle():
+def test_restock_vehicle(admin_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -23,6 +24,7 @@ def test_restock_vehicle():
 
     response = client.post(
         f"/api/vehicles/{vehicle_id}/restock",
+        headers=admin_headers,
         json={
             "quantity": 10,
         },
@@ -38,9 +40,11 @@ def test_restock_vehicle():
     assert data["vehicle"]["model"] == "Camry"
     assert data["vehicle"]["quantity"] == 15
 
-def test_restock_vehicle_after_purchase():
+
+def test_restock_vehicle_after_purchase(admin_headers, user_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Honda",
             "model": "City",
@@ -56,6 +60,7 @@ def test_restock_vehicle_after_purchase():
 
     purchase_response = client.post(
         f"/api/vehicles/{vehicle_id}/purchase",
+        headers=user_headers,
         json={
             "quantity": 4,
         },
@@ -66,6 +71,7 @@ def test_restock_vehicle_after_purchase():
 
     restock_response = client.post(
         f"/api/vehicles/{vehicle_id}/restock",
+        headers=admin_headers,
         json={
             "quantity": 7,
         },
@@ -79,9 +85,11 @@ def test_restock_vehicle_after_purchase():
     assert data["vehicle"]["id"] == vehicle_id
     assert data["vehicle"]["quantity"] == 13
 
-def test_restock_zero_quantity():
+
+def test_restock_zero_quantity(admin_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Corolla",
@@ -97,6 +105,7 @@ def test_restock_zero_quantity():
 
     response = client.post(
         f"/api/vehicles/{vehicle_id}/restock",
+        headers=admin_headers,
         json={
             "quantity": 0,
         },
@@ -105,15 +114,18 @@ def test_restock_zero_quantity():
     assert response.status_code == 422
 
     get_response = client.get(
-        f"/api/vehicles/{vehicle_id}"
+        f"/api/vehicles/{vehicle_id}",
+        headers=admin_headers,
     )
 
     assert get_response.status_code == 200
     assert get_response.json()["quantity"] == 5
 
-def test_restock_negative_quantity():
+
+def test_restock_negative_quantity(admin_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Hyundai",
             "model": "Venue",
@@ -129,6 +141,7 @@ def test_restock_negative_quantity():
 
     response = client.post(
         f"/api/vehicles/{vehicle_id}/restock",
+        headers=admin_headers,
         json={
             "quantity": -3,
         },
@@ -137,15 +150,18 @@ def test_restock_negative_quantity():
     assert response.status_code == 422
 
     get_response = client.get(
-        f"/api/vehicles/{vehicle_id}"
+        f"/api/vehicles/{vehicle_id}",
+        headers=admin_headers,
     )
 
     assert get_response.status_code == 200
     assert get_response.json()["quantity"] == 5
 
-def test_restock_vehicle_not_found():
+
+def test_restock_vehicle_not_found(admin_headers):
     response = client.post(
         "/api/vehicles/999999/restock",
+        headers=admin_headers,
         json={
             "quantity": 10,
         },
@@ -154,9 +170,11 @@ def test_restock_vehicle_not_found():
     assert response.status_code == 404
     assert response.json()["detail"] == "Vehicle not found"
 
-def test_restock_vehicle_updates_updated_at():
+
+def test_restock_vehicle_updates_updated_at(admin_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Fortuner",
@@ -174,6 +192,7 @@ def test_restock_vehicle_updates_updated_at():
 
     response = client.post(
         f"/api/vehicles/{vehicle_id}/restock",
+        headers=admin_headers,
         json={
             "quantity": 5,
         },

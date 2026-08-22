@@ -2,12 +2,16 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 
+
 client = TestClient(app)
 
 
-def test_update_vehicle():
+def test_update_vehicle(admin_token):
     create_response = client.post(
         "/api/vehicles",
+        headers={
+            "Authorization": f"Bearer {admin_token}",
+        },
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -23,6 +27,9 @@ def test_update_vehicle():
 
     response = client.put(
         f"/api/vehicles/{vehicle_id}",
+        headers={
+            "Authorization": f"Bearer {admin_token}",
+        },
         json={
             "make": "Toyota",
             "model": "Corolla",
@@ -43,9 +50,13 @@ def test_update_vehicle():
     assert float(data["price"]) == 23000
     assert data["quantity"] == 8
 
-def test_update_vehicle_not_found():
+
+def test_update_vehicle_not_found(admin_token):
     response = client.put(
         "/api/vehicles/999999",
+        headers={
+            "Authorization": f"Bearer {admin_token}",
+        },
         json={
             "make": "Toyota",
             "model": "Corolla",

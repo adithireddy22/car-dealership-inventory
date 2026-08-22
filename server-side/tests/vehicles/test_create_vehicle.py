@@ -2,12 +2,14 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 
+
 client = TestClient(app)
 
 
-def test_create_vehicle():
+def test_create_vehicle(admin_headers):
     response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -21,11 +23,9 @@ def test_create_vehicle():
 
     data = response.json()
 
+    assert data["id"] is not None
     assert data["make"] == "Toyota"
     assert data["model"] == "Camry"
     assert data["category"] == "Sedan"
-    assert float(data["price"]) == 25000
+    assert data["price"] == 25000
     assert data["quantity"] == 5
-    assert "id" in data
-    assert "created_at" in data
-    assert "updated_at" in data

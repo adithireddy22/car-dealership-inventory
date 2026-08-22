@@ -5,17 +5,19 @@ from app.main import app
 client = TestClient(app)
 
 
-def test_list_vehicles():
+def test_get_vehicle(admin_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
-            "make": "Toyota",
-            "model": "Camry",
+            "make": "Honda",
+            "model": "Civic",
             "category": "Sedan",
-            "price": 25000,
-            "quantity": 5,
+            "price": 22000,
+            "quantity": 3,
         },
     )
+
 
     assert create_response.status_code == 201
 

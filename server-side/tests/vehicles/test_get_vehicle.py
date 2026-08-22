@@ -4,10 +4,10 @@ from app.main import app
 
 client = TestClient(app)
 
-
-def test_get_vehicle():
+def test_get_vehicle(admin_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Honda",
             "model": "Civic",

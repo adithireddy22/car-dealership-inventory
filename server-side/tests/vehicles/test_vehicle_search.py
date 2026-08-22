@@ -1,6 +1,29 @@
-def test_filter_vehicles_by_make(client):
+from fastapi.testclient import TestClient
+from sqlalchemy import delete
+
+from app.database import SessionLocal
+from app.main import app
+from app.models.vehicle import Vehicle
+
+client = TestClient(app)
+
+
+def cleanup_vehicles():
+    db = SessionLocal()
+
+    try:
+        db.execute(delete(Vehicle))
+        db.commit()
+    finally:
+        db.close()
+
+
+def test_filter_vehicles_by_make(admin_headers):
+    cleanup_vehicles()
+
     client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -12,6 +35,7 @@ def test_filter_vehicles_by_make(client):
 
     client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Honda",
             "model": "Civic",
@@ -30,9 +54,13 @@ def test_filter_vehicles_by_make(client):
     assert len(data) == 1
     assert data[0]["make"] == "Toyota"
 
-def test_filter_vehicles_by_model(client):
+
+def test_filter_vehicles_by_model(admin_headers):
+    cleanup_vehicles()
+
     client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -44,6 +72,7 @@ def test_filter_vehicles_by_model(client):
 
     client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Corolla",
@@ -62,9 +91,13 @@ def test_filter_vehicles_by_model(client):
     assert len(data) == 1
     assert data[0]["model"] == "Camry"
 
-def test_filter_vehicles_by_category(client):
+
+def test_filter_vehicles_by_category(admin_headers):
+    cleanup_vehicles()
+
     client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -76,6 +109,7 @@ def test_filter_vehicles_by_category(client):
 
     client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "RAV4",
@@ -94,9 +128,13 @@ def test_filter_vehicles_by_category(client):
     assert len(data) == 1
     assert data[0]["category"] == "SUV"
 
-def test_filter_vehicles_by_min_price(client):
+
+def test_filter_vehicles_by_min_price(admin_headers):
+    cleanup_vehicles()
+
     client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Toyota",
             "model": "Camry",
@@ -108,6 +146,7 @@ def test_filter_vehicles_by_min_price(client):
 
     client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Honda",
             "model": "Civic",
@@ -124,4 +163,4 @@ def test_filter_vehicles_by_min_price(client):
     data = response.json()
 
     assert len(data) == 1
-    assert data[0]["price"] == 25000
+    assert float(data[0]["price"]) == 25000

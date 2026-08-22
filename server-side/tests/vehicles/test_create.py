@@ -6,9 +6,12 @@ from app.main import app
 client = TestClient(app)
 
 
-def test_create_vehicle():
+def test_create_vehicle(admin_token):
     response = client.post(
         "/api/vehicles",
+        headers={
+            "Authorization": f"Bearer {admin_token}",
+        },
         json={
             "make": "Toyota",
             "model": "Camry",

@@ -2,12 +2,14 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 
+
 client = TestClient(app)
 
 
-def test_delete_vehicle():
+def test_delete_vehicle(admin_headers):
     create_response = client.post(
         "/api/vehicles",
+        headers=admin_headers,
         json={
             "make": "Ford",
             "model": "Mustang",
@@ -22,7 +24,8 @@ def test_delete_vehicle():
     vehicle_id = create_response.json()["id"]
 
     response = client.delete(
-        f"/api/vehicles/{vehicle_id}"
+        f"/api/vehicles/{vehicle_id}",
+        headers=admin_headers,
     )
 
     assert response.status_code == 204
@@ -34,9 +37,10 @@ def test_delete_vehicle():
     assert get_response.status_code == 404
 
 
-def test_delete_vehicle_not_found():
+def test_delete_vehicle_not_found(admin_headers):
     response = client.delete(
-        "/api/vehicles/999999"
+        "/api/vehicles/999999",
+        headers=admin_headers,
     )
 
     assert response.status_code == 404

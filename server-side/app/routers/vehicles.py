@@ -1,5 +1,5 @@
 from decimal import Decimal
-from fastapi import APIRouter, Depends, HTTPException, status
+from app.core.dependencies import get_current_admin
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -29,6 +29,7 @@ router = APIRouter(
 def create_vehicle(
     vehicle_data: VehicleCreate,
     db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
 ):
     vehicle = Vehicle(
         make=vehicle_data.make,
@@ -146,6 +147,7 @@ def update_vehicle(
     vehicle_id: int,
     vehicle_data: VehicleUpdate,
     db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
 ):
     vehicle = db.get(Vehicle, vehicle_id)
 
@@ -172,6 +174,7 @@ def update_vehicle(
 def delete_vehicle(
     vehicle_id: int,
     db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
 ):
     vehicle = db.get(Vehicle, vehicle_id)
 
@@ -194,6 +197,7 @@ def restock_vehicle(
     vehicle_id: int,
     restock_data: InventoryQuantity,
     db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
 ):
     vehicle = db.get(Vehicle, vehicle_id)
 
