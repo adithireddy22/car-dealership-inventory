@@ -498,8 +498,7 @@ function VehicleList() {
             EMPTY RESULT
         ====================================================== */}
 
-        {!error &&
-          filteredVehicles.length === 0 && (
+        {!error && filteredVehicles.length === 0 && (
 
             <div className="error-box">
               No vehicles match your filters.
@@ -512,8 +511,7 @@ function VehicleList() {
             VEHICLE GRID
         ====================================================== */}
 
-        {!error &&
-          filteredVehicles.length > 0 && (
+        {filteredVehicles.length > 0 && (
 
             <div className="vehicle-grid">
 
