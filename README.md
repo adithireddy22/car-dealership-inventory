@@ -686,18 +686,39 @@ The frontend uses:
 - Vitest
 - React Testing Library
 
-Tests were implemented for important application pages and components.
+Frontend tests cover areas including:
 
-The completed frontend test suite includes tests for:
+- Vehicle listing and display
+- Vehicle search
+- Vehicle category filtering
+- Vehicle stock filtering
+- Vehicle price filtering
+- Vehicle creation
+- Vehicle form validation
+- Vehicle details display
+- Vehicle purchase
+- Vehicle restocking
+- Vehicle deletion
+- Empty inventory handling
+- Invalid vehicle ID handling
+- API error handling
+- Authentication-related functionality
+- Admin authorization
+- Normal user restrictions
+- Navigation and redirects
+- Preservation of vehicle data after failed operations
 
-    VehicleList
-    VehicleDetails
-    Authentication-related functionality
+The current frontend test suite includes:
 
-The latest completed frontend test run reported:
+- `VehicleList.test.jsx` — 12 tests
+- `VehicleDetails.test.jsx` — 11 tests
+- `AddVehicle.test.jsx` — 13 tests
 
-    Test Files: 3 passed
-    Tests:      18 passed
+Latest frontend test result:
+
+- **Test Files: 3 passed**
+- **Tests: 36 passed**
+- **Status: All frontend page tests passing**
 
 ---
 
@@ -1035,7 +1056,12 @@ Potential future improvements include:
 
 ---
 
+
 # 🤖 My AI Usage
+
+- **Amazon Q** — Used for writing the implementation plan and development approach.
+- **Gemini** — Used for creating UI prompts based on the implementation plan and generating UI design ideas.
+
 
 AI assistance from **ChatGPT** was used during the development of this project for:
 
@@ -1058,6 +1084,29 @@ AI assistance from **ChatGPT** was used during the development of this project f
 AI was used as a development and learning assistant. The project implementation, integration, testing, debugging, and verification were performed as part of the development process.
 
 ---
+
+# OUTPUTS
+
+![Login Screenshot](outputs/login.png)
+![Logout Screenshot](outputs/logout.png)
+![Out of Stock Screenshot](outputs/out_of_stock.png)
+![Register Screenshot](outputs/register.png)
+
+![Admin Add Vehicle](outputs/admin/admin_addVehicle.png)
+![Admin Dashboard](outputs/admin/admin_dashboard.png)
+![Admin Delete Confirmation](outputs/admin/admin_deleteConfirmation.png)
+![Admin Purchase](outputs/admin/admin_purchase.png)
+![Admin Restock Delete Vehicle](outputs/admin/admin_restock_deleteVehicle.png)
+![Admin Search Bar](outputs/admin/admin_searchbar.png)
+
+![User Cannot Add Vehicle](outputs/user/user_cannot_addVehiclle.png)
+![User Cannot Restock/Delete](outputs/user/user_cannot_restock_delete.png)
+![User Dashboard](outputs/user/user_dashboard.png)
+![User Purchase](outputs/user/user_purchase.png)
+![User Search Bar](outputs/user/user_searchbar.png)
+
+---
+
 
 # 📄 License
 
@@ -1088,3 +1137,5 @@ The completed system provides authenticated users with the ability to manage dea
     PostgreSQL
 
 **Status: ✅ Phase 12 Completed**
+
+[def]: outputs/login.png
