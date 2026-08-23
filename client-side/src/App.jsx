@@ -10,6 +10,7 @@ import Register from './pages/Register'
 import AddVehicle from './pages/AddVehicle'
 import VehicleList from './pages/VehicleList'
 import VehicleDetails from './pages/VehicleDetails'
+import AdminRoute from './routes/AdminRoute'
 
 import ProtectedRoute from './routes/ProtectedRoute'
 import { useAuth } from './context/AuthContext'
@@ -159,9 +160,9 @@ function App() {
         <Route
           path="/vehicles/add"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <AddVehicle />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
 
