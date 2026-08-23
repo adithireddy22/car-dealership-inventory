@@ -60,3 +60,31 @@ export const restockVehicle = async (
     }
   )
 }
+
+export const searchVehicles = async (params) => {
+  const query = new URLSearchParams()
+
+  if (params.make) {
+    query.set('make', params.make)
+  }
+
+  if (params.model) {
+    query.set('model', params.model)
+  }
+
+  if (params.category) {
+    query.set('category', params.category)
+  }
+
+  if (params.min_price !== undefined) {
+    query.set('min_price', params.min_price)
+  }
+
+  if (params.max_price !== undefined) {
+    query.set('max_price', params.max_price)
+  }
+
+  return request(
+    `/api/vehicles/search?${query.toString()}`
+  )
+}

@@ -12,59 +12,121 @@ import VehicleList from './pages/VehicleList'
 import VehicleDetails from './pages/VehicleDetails'
 
 import ProtectedRoute from './routes/ProtectedRoute'
-
 import { useAuth } from './context/AuthContext'
 
+import Navbar from './components/Navbar'
+
+
 function Dashboard() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
 
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <div className="min-h-screen bg-slate-950 text-white">
 
-      <p>You are authenticated.</p>
+      <div className="max-w-6xl mx-auto px-6 py-12">
 
-      {user && (
-        <div>
-          <p>
-            Username: {user.username}
-          </p>
+        {/* Header */}
+        <div className="mb-10">
+          <div className="inline-flex items-center px-3 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
+            AutoVault Dashboard
+          </div>
 
-          <p>
-            Email: {user.email}
-          </p>
+          <h1 className="text-4xl sm:text-5xl font-black tracking-tight">
+            Welcome, {user?.username}
+          </h1>
 
-          <p>
-            Role: {user.role}
+          <p className="mt-3 text-slate-400">
+            Manage your vehicle inventory and account.
           </p>
         </div>
-      )}
 
-      <button onClick={logout}>
-        Logout
-      </button>
+        {/* User Information */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              Username
+            </p>
+
+            <h2 className="mt-3 text-xl font-bold text-white">
+              {user?.username}
+            </h2>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              Email
+            </p>
+
+            <h2 className="mt-3 text-xl font-bold text-white break-all">
+              {user?.email}
+            </h2>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              Role
+            </p>
+
+            <h2 className="mt-3 text-xl font-black text-indigo-400">
+              {user?.role}
+            </h2>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
   )
 }
 
+
 function App() {
+  const { isAuthenticated, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">
+        Loading...
+      </div>
+    )
+  }
+
   return (
     <BrowserRouter>
+
+      {/* Show Navbar only after authentication */}
+      {isAuthenticated && <Navbar />}
+
       <Routes>
 
-        {/* Public routes */}
+        {/* ==============================
+            PUBLIC ROUTES
+        =============================== */}
 
         <Route
           path="/login"
-          element={<Login />}
+          element={
+            isAuthenticated
+              ? <Navigate to="/dashboard" replace />
+              : <Login />
+          }
         />
 
         <Route
           path="/register"
-          element={<Register />}
+          element={
+            isAuthenticated
+              ? <Navigate to="/dashboard" replace />
+              : <Register />
+          }
         />
 
-        {/* Protected Dashboard */}
+
+        {/* ==============================
+            DASHBOARD
+        =============================== */}
 
         <Route
           path="/dashboard"
@@ -75,7 +137,10 @@ function App() {
           }
         />
 
-        {/* Protected Vehicle List */}
+
+        {/* ==============================
+            VEHICLES
+        =============================== */}
 
         <Route
           path="/vehicles"
@@ -86,7 +151,10 @@ function App() {
           }
         />
 
-        {/* Protected Add Vehicle */}
+
+        {/* ==============================
+            ADD VEHICLE
+        =============================== */}
 
         <Route
           path="/vehicles/add"
@@ -97,7 +165,10 @@ function App() {
           }
         />
 
-        {/* Protected Vehicle Details */}
+
+        {/* ==============================
+            VEHICLE DETAILS
+        =============================== */}
 
         <Route
           path="/vehicles/:vehicleId"
@@ -108,31 +179,46 @@ function App() {
           }
         />
 
-        {/* Default route */}
+
+        {/* ==============================
+            DEFAULT
+        =============================== */}
 
         <Route
           path="/"
           element={
             <Navigate
-              to="/login"
+              to={
+                isAuthenticated
+                  ? "/dashboard"
+                  : "/login"
+              }
               replace
             />
           }
         />
 
-        {/* Unknown route */}
+
+        {/* ==============================
+            UNKNOWN ROUTE
+        =============================== */}
 
         <Route
           path="*"
           element={
             <Navigate
-              to="/login"
+              to={
+                isAuthenticated
+                  ? "/dashboard"
+                  : "/login"
+              }
               replace
             />
           }
         />
 
       </Routes>
+
     </BrowserRouter>
   )
 }
