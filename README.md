@@ -1,96 +1,300 @@
-# Car Dealership Inventory Management System
+# 🚗 Car Dealership Inventory Management System
 
-A full-stack web application for managing a car dealership's vehicle inventory. The system is designed to allow dealership staff to efficiently view, add, update, delete, search, and manage vehicle records through a responsive web interface.
+A full-stack web application for managing a car dealership's vehicle inventory. The system allows authenticated dealership users to view, add, update, delete, search, filter, purchase, and restock vehicles through a responsive React-based web interface.
 
-## Project Status
-
-🚧 **In Development**
-
-The initial project structure and frontend setup are complete. Backend, database integration, API development, testing, and the remaining UI features will be implemented incrementally.
+The application is built using **React.js, FastAPI, PostgreSQL, and JWT-based authentication**, with automated testing for backend APIs and frontend functionality.
 
 ---
 
-## Features
+## 📌 Project Status
 
-The planned application will include:
+**✅ Completed — Phase 12**
 
-- View all cars in the dealership inventory
-- Add new vehicles
-- View detailed vehicle information
-- Update vehicle information
-- Delete vehicles from inventory
-- Search and filter vehicles
-- Responsive user interface
-- Form validation
-- RESTful API
+The Car Dealership Inventory Management System has been developed as a full-stack application with:
+
+- User registration and authentication
+- JWT-based authentication
+- Protected frontend routes
 - PostgreSQL database integration
+- FastAPI REST API
+- Vehicle CRUD operations
+- Vehicle search and filtering
+- Vehicle detail pages
+- Purchase inventory operation
+- Restock inventory operation
+- Form validation
 - Error handling
-- Automated testing
+- Responsive frontend UI
+- Backend API testing
+- Frontend component/page testing
 
 ---
 
-## Tech Stack
+# 🎯 Project Objective
 
-### Frontend
+The objective of this project is to build a complete inventory management system for a car dealership.
+
+The system provides authenticated users with an interface to manage dealership vehicles and their available quantities.
+
+The application follows a full-stack architecture:
+
+    React Frontend
+           ↓
+       REST API
+           ↓
+    FastAPI Backend
+           ↓
+    PostgreSQL Database
+
+---
+
+# ✨ Features
+
+## 🔐 Authentication
+
+- User registration
+- User login
+- JWT access-token authentication
+- Authenticated user information
+- Protected application routes
+- Automatic redirection to login when authentication is missing or invalid
+- Logout functionality
+
+---
+
+## 🚘 Vehicle Management
+
+Authenticated users can:
+
+- View all vehicles
+- View individual vehicle details
+- Add a new vehicle
+- Update vehicle information
+- Delete vehicles
+- Search vehicles
+- Filter vehicles by category
+- Filter vehicles by stock availability
+- View vehicle quantity
+- Purchase vehicles
+- Restock vehicles
+
+---
+
+## 📦 Inventory Operations
+
+### Purchase Vehicle
+
+Users can purchase an available vehicle.
+
+The purchase operation decreases the available vehicle quantity.
+
+Example:
+
+    Current Quantity: 5
+    Purchase: 1
+    New Quantity: 4
+
+The system prevents purchasing vehicles when the available quantity is insufficient.
+
+---
+
+### Restock Vehicle
+
+Users can increase the inventory quantity of an existing vehicle.
+
+Example:
+
+    Current Quantity: 4
+    Restock: 3
+    New Quantity: 7
+
+Restock validation prevents invalid quantities from being submitted.
+
+---
+
+## 🔎 Search and Filtering
+
+The vehicle catalog supports:
+
+- Vehicle search
+- Category filtering
+- Stock availability filtering
+- Combined filtering
+- Dynamic inventory results
+
+Supported vehicle categories include:
+
+- Sedan
+- SUV
+- Truck
+- Hatchback
+- Electric
+- Coupe
+
+---
+
+## 📝 Form Validation
+
+Vehicle forms include validation for fields such as:
+
+- Vehicle name
+- Category
+- Price
+- Quantity
+
+Authentication forms also validate required user information.
+
+Invalid input is handled before submitting requests to the backend.
+
+---
+
+## ⚠️ Error Handling
+
+The application handles common errors including:
+
+- Invalid authentication
+- Missing authentication token
+- Invalid vehicle ID
+- Vehicle not found
+- Invalid vehicle data
+- Invalid quantity
+- Insufficient inventory
+- Backend/API errors
+- Database-related errors
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
 
 - React.js
 - Vite
-- Tailwind CSS
+- JavaScript
 - HTML5
 - CSS3
-- JavaScript
 
-### Backend
+## Backend
 
 - Python
 - FastAPI
+- Pydantic
+- JWT Authentication
 
-### Database
+## Database
 
 - PostgreSQL
 
-### Development Tools
+## Testing
+
+### Backend
+
+- pytest
+- FastAPI TestClient
+
+### Frontend
+
+- Vitest
+- React Testing Library
+
+## Development Tools
 
 - Git
 - GitHub
 - VS Code
+- npm
+- Python Virtual Environment
+- PostgreSQL
 
 ---
 
-## Project Structure
+# 🏗️ Application Architecture
 
-```text
-car-dealership-inventory/
-│
-├── client-side/
-│   ├── public/
-│   ├── src/
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── vite.config.js
-│   └── .gitignore
-│
-├── server-side/
-│   ├── app/
-│   ├── .venv/
-│   └── ...
-│
-├── .gitignore
-├── README.md
-└── PROMPTS.md
-```
-
-> `.venv/`, `node_modules/`, `.env`, and other sensitive or local files are excluded from version control using `.gitignore`.
+    ┌─────────────────────┐
+    │   React Frontend    │
+    │                     │
+    │ Login               │
+    │ Register            │
+    │ Dashboard           │
+    │ Vehicle List        │
+    │ Vehicle Details     │
+    │ Add Vehicle         │
+    │ Update Vehicle      │
+    └──────────┬──────────┘
+               │
+               │ HTTP / REST API
+               ▼
+    ┌─────────────────────┐
+    │   FastAPI Backend   │
+    │                     │
+    │ Authentication      │
+    │ Vehicle APIs        │
+    │ Validation          │
+    │ Business Logic      │
+    └──────────┬──────────┘
+               │
+               │ SQL
+               ▼
+    ┌─────────────────────┐
+    │     PostgreSQL      │
+    │                     │
+    │ Users               │
+    │ Vehicles            │
+    └─────────────────────┘
 
 ---
 
-# Local Setup and Installation
+# 📁 Project Structure
 
-Follow the steps below to set up and run the Car Dealership Inventory Management System locally.
+    car-dealership-inventory/
+    │
+    ├── client-side/
+    │   ├── public/
+    │   ├── src/
+    │   │   ├── components/
+    │   │   ├── pages/
+    │   │   ├── services/
+    │   │   ├── tests/
+    │   │   ├── App.jsx
+    │   │   ├── App.css
+    │   │   └── main.jsx
+    │   ├── package.json
+    │   ├── package-lock.json
+    │   ├── vite.config.js
+    │   └── .gitignore
+    │
+    ├── server-side/
+    │   ├── app/
+    │   │   ├── models/
+    │   │   ├── routers/
+    │   │   ├── schemas/
+    │   │   ├── services/
+    │   │   ├── database.py
+    │   │   ├── dependencies.py
+    │   │   └── main.py
+    │   │
+    │   ├── tests/
+    │   │   ├── auth/
+    │   │   ├── vehicles/
+    │   │   └── ...
+    │   │
+    │   ├── requirements.txt
+    │   ├── .env
+    │   └── .gitignore
+    │
+    ├── .gitignore
+    ├── README.md
+    └── PROMPTS.md
+
+> `.venv/`, `node_modules/`, `.env`, `__pycache__/`, and other local or sensitive files are excluded from version control.
+
+---
+
+# 🚀 Local Setup and Installation
 
 ## Prerequisites
 
-Make sure the following software is installed on your system before setting up the project:
+Make sure the following software is installed:
 
 - Git
 - Node.js
@@ -99,644 +303,788 @@ Make sure the following software is installed on your system before setting up t
 - PostgreSQL
 - VS Code or another code editor
 
-You can verify the installations using:
+Verify the installations:
 
-```bash
-git --version
-node --version
-npm --version
-python --version
-psql --version
-```
+    git --version
+    node --version
+    npm --version
+    python --version
+    psql --version
 
 ---
 
-## 1. Clone the Repository
+# 1. Clone the Repository
 
-Open a terminal and clone the repository:
+    git clone <YOUR_GITHUB_REPOSITORY_URL>
 
-```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-```
+Navigate into the project:
 
-Navigate into the project directory:
-
-```bash
-cd car-dealership-inventory
-```
-
-The project contains separate directories for the frontend and backend:
-
-```text
-car-dealership-inventory/
-├── client-side/
-└── server-side/
-```
+    cd car-dealership-inventory
 
 ---
 
-# Backend Setup
+# 2. Backend Setup
 
-The backend is developed using **Python and FastAPI**.
+Navigate to the backend:
 
-## 2. Navigate to the Backend
-
-From the project root directory, run:
-
-```bash
-cd server-side
-```
+    cd server-side
 
 ---
 
-## 3. Create a Python Virtual Environment
+## Create Virtual Environment
 
-Create a virtual environment using:
-
-```bash
-python -m venv .venv
-```
-
-The virtual environment will be created inside the `server-side` directory.
+    python -m venv .venv
 
 ---
 
-## 4. Activate the Virtual Environment
+## Activate Virtual Environment
 
 ### Windows Command Prompt
 
-```bash
-.venv\Scripts\activate
-```
+    .venv\Scripts\activate
 
 ### Windows PowerShell
 
-```powershell
-.venv\Scripts\Activate.ps1
-```
+    .venv\Scripts\Activate.ps1
 
-After successful activation, the terminal should display:
+After activation:
 
-```text
-(.venv)
-```
+    (.venv)
+
+should appear in the terminal.
 
 ---
 
-## 5. Install Backend Dependencies
+# 3. Install Backend Dependencies
 
-Install the required Python packages:
-
-```bash
-pip install -r requirements.txt
-```
-
-If a `requirements.txt` file has not been created yet, install the required dependencies and generate the file using:
-
-```bash
-pip freeze > requirements.txt
-```
+    pip install -r requirements.txt
 
 ---
 
-## 6. Configure Backend Environment Variables
+# 4. Configure Environment Variables
 
-Create a `.env` file inside the `server-side` directory.
+Create a `.env` file inside `server-side`.
 
 Example:
 
-```env
-DATABASE_URL=postgresql://username:password@localhost:5432/car_dealership
-```
+    DATABASE_URL=postgresql://username:password@localhost:5432/car_dealership
+    SECRET_KEY=your_secret_key
+    ALGORITHM=HS256
+    ACCESS_TOKEN_EXPIRE_MINUTES=30
 
-Replace the values with your local PostgreSQL credentials.
+Replace the values with your local configuration.
 
-> **Important:** Never commit the `.env` file to Git. Make sure `.env` is included in `.gitignore`.
+> **Important:** Never commit `.env` to GitHub.
 
-For other developers, an `.env.example` file can be provided:
+An `.env.example` file can be used to document required variables without exposing credentials.
 
-```env
-DATABASE_URL=
-```
+Example:
 
-The `.env.example` file can safely be committed because it does not contain actual credentials.
+    DATABASE_URL=
+    SECRET_KEY=
+    ALGORITHM=HS256
+    ACCESS_TOKEN_EXPIRE_MINUTES=30
 
 ---
 
-## 7. Set Up PostgreSQL
+# 5. PostgreSQL Setup
 
 Make sure PostgreSQL is installed and running.
 
-Create a database for the project:
+Create the database:
 
-```sql
-CREATE DATABASE car_dealership;
-```
+    CREATE DATABASE car_dealership;
 
-Configure the database connection in the backend `.env` file:
+The database connection should match the `DATABASE_URL` configured in `.env`.
 
-```env
-DATABASE_URL=postgresql://username:password@localhost:5432/car_dealership
-```
+Example:
 
-The username, password, host, port, and database name should match your local PostgreSQL configuration.
+    DATABASE_URL=postgresql://username:password@localhost:5432/car_dealership
 
 ---
 
-## 8. Start the Backend Server
+# 6. Start the Backend
 
-Make sure you are inside the `server-side` directory and that the virtual environment is activated.
+From the `server-side` directory:
 
-Run:
-
-```bash
-uvicorn app.main:app --reload
-```
-
-The backend server will start at:
-
-```text
-http://127.0.0.1:8000
-```
-
-FastAPI provides interactive API documentation at:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-Open the `/docs` URL in your browser to access Swagger UI.
-
----
-
-# Frontend Setup
-
-The frontend is developed using **React, Vite, Tailwind CSS, HTML5, CSS3, and JavaScript**.
-
-## 9. Open a New Terminal
-
-Keep the backend server running.
-
-Open a second terminal window or terminal tab.
-
-Navigate to the project root:
-
-```bash
-cd car-dealership-inventory
-```
-
-Then navigate to the frontend:
-
-```bash
-cd client-side
-```
-
----
-
-## 10. Install Frontend Dependencies
-
-Install all dependencies listed in `package.json`:
-
-```bash
-npm install
-```
-
-This will install the required frontend dependencies and create the `node_modules` directory.
-
-The `package-lock.json` file will be used to maintain consistent dependency versions.
-
----
-
-## 11. Start the Frontend Development Server
-
-Run:
-
-```bash
-npm run dev
-```
-
-Vite will display the local development URL in the terminal.
-
-The frontend will usually be available at:
-
-```text
-http://localhost:5173
-```
-
-Open the displayed URL in your browser.
-
----
-
-# Running the Complete Application
-
-Both the frontend and backend should run simultaneously during development.
-
-## Terminal 1 - Backend
-
-Open the first terminal:
-
-```bash
-cd car-dealership-inventory/server-side
-```
-
-Activate the virtual environment:
-
-```bash
-.venv\Scripts\activate
-```
-
-Start the FastAPI server:
-
-```bash
-uvicorn app.main:app --reload
-```
+    uvicorn app.main:app --reload
 
 Backend:
 
-```text
-http://127.0.0.1:8000
-```
+    http://127.0.0.1:8000
+
+FastAPI Swagger documentation:
+
+    http://127.0.0.1:8000/docs
+
+---
+
+# 7. Frontend Setup
+
+Open a second terminal.
+
+Navigate to the project:
+
+    cd car-dealership-inventory
+
+Then:
+
+    cd client-side
+
+---
+
+## Install Frontend Dependencies
+
+    npm install
+
+---
+
+## Start Frontend
+
+    npm run dev
+
+The frontend will usually be available at:
+
+    http://localhost:5173
+
+---
+
+# ▶️ Running the Complete Application
+
+The backend and frontend should run simultaneously.
+
+## Terminal 1 — Backend
+
+    cd car-dealership-inventory/server-side
+
+Activate the environment:
+
+    .venv\Scripts\activate
+
+Start FastAPI:
+
+    uvicorn app.main:app --reload
+
+Backend:
+
+    http://127.0.0.1:8000
 
 API documentation:
 
-```text
-http://127.0.0.1:8000/docs
-```
+    http://127.0.0.1:8000/docs
 
 ---
 
-## Terminal 2 - Frontend
+## Terminal 2 — Frontend
 
-Open a second terminal:
+    cd car-dealership-inventory/client-side
 
-```bash
-cd car-dealership-inventory/client-side
-```
+Start Vite:
 
-Start the React development server:
-
-```bash
-npm run dev
-```
+    npm run dev
 
 Frontend:
 
-```text
-http://localhost:5173
-```
+    http://localhost:5173
 
 ---
 
-# Frontend and Backend Communication
+# 🔐 Authentication Flow
 
-The React frontend communicates with the FastAPI backend through REST APIs.
+The application uses JWT-based authentication.
 
-During development:
+    User
+      ↓
+    Register
+      ↓
+    Login
+      ↓
+    FastAPI validates credentials
+      ↓
+    JWT access token generated
+      ↓
+    Frontend stores authentication state
+      ↓
+    Protected API requests include token
+      ↓
+    FastAPI verifies JWT
+      ↓
+    Authorized request processed
 
-```text
-Frontend
-http://localhost:5173
-        |
-        | HTTP Requests
-        v
-Backend
-http://127.0.0.1:8000
-        |
-        v
-PostgreSQL
-```
+Users who are not authenticated cannot access protected application functionality.
 
-Once API integration is implemented, the frontend will use the backend endpoints to perform inventory operations.
+If authentication is missing or the token becomes invalid, the application redirects the user to the login page.
 
 ---
 
-# API Documentation
+# 👤 User Authentication APIs
 
-FastAPI automatically provides interactive API documentation.
-
-Open:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-The planned inventory endpoints include:
+The authentication system provides endpoints for:
 
 | Method | Endpoint | Description |
-|---|---|---|
-| GET | `/cars` | Get all cars |
-| GET | `/cars/{id}` | Get a specific car |
-| POST | `/cars` | Add a new car |
-| PUT | `/cars/{id}` | Update an existing car |
-| DELETE | `/cars/{id}` | Delete a car |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Authenticate a user and obtain JWT |
+| GET | `/api/auth/me` | Get the currently authenticated user |
+
+> Exact API prefixes may vary according to the router configuration in the backend.
 
 ---
 
-# Environment Variables
+# 🚘 Vehicle API
 
-Sensitive configuration values must be stored in `.env` files.
+The backend provides REST APIs for vehicle management.
 
-Example:
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/vehicles` | Get all vehicles |
+| GET | `/api/vehicles/{id}` | Get a specific vehicle |
+| POST | `/api/vehicles` | Add a vehicle |
+| PUT | `/api/vehicles/{id}` | Update a vehicle |
+| DELETE | `/api/vehicles/{id}` | Delete a vehicle |
+| POST | `/api/vehicles/{id}/purchase` | Purchase vehicle quantity |
+| POST | `/api/vehicles/{id}/restock` | Restock vehicle quantity |
 
-```env
-DATABASE_URL=postgresql://username:password@localhost:5432/car_dealership
-```
-
-The following file should **not** be committed:
-
-```text
-.env
-```
-
-The repository may contain:
-
-```text
-.env.example
-```
-
-Example:
-
-```env
-DATABASE_URL=
-```
-
-This allows developers to understand which environment variables are required without exposing credentials.
+All protected vehicle operations require valid authentication.
 
 ---
 
-# Git and Ignored Files
+# 🔄 Frontend and Backend Communication
 
-The project uses `.gitignore` to prevent local and sensitive files from being committed.
+    React Application
+           │
+           │ HTTP Requests
+           │
+           ▼
+    FastAPI REST API
+           │
+           │ Authentication
+           │ Validation
+           │ Business Logic
+           ▼
+    PostgreSQL
 
-The following should generally be ignored:
+The frontend communicates with FastAPI through REST API requests.
 
-```text
-node_modules/
-.venv/
-.env
-__pycache__/
-*.pyc
-```
-
-The following files should generally be committed:
-
-```text
-package.json
-package-lock.json
-requirements.txt
-.gitignore
-README.md
-PROMPTS.md
-source code
-configuration files
-```
-
-> `package-lock.json` should be committed because it locks the frontend dependency versions and allows consistent installations across environments.
+JWT authentication is used to authorize protected requests.
 
 ---
 
-# Verify the Installation
+# 🖥️ Application Pages
 
-After starting both servers, verify the following:
+The application contains the following major screens:
 
-### Frontend
+## Login
+
+Allows existing users to authenticate.
+
+## Register
+
+Allows new users to create an account.
+
+## Dashboard
+
+Displays authenticated user information and provides access to the application.
+
+## Vehicle List
+
+Displays dealership inventory with:
+
+- Vehicle cards
+- Categories
+- Stock status
+- Search
+- Filters
+- Vehicle count
+- Add Vehicle action
+
+## Vehicle Details
+
+Displays detailed information for an individual vehicle.
+
+Users can:
+
+- Purchase inventory
+- Restock inventory
+- Update vehicle information
+- Delete the vehicle
+- Return to the vehicle list
+
+## Add Vehicle
+
+Provides a form for creating a new vehicle record.
+
+---
+
+# 🔍 Vehicle Search and Filtering
+
+The vehicle catalog provides filtering functionality for easier inventory management.
+
+Available filters include:
+
+    All
+    Sedan
+    SUV
+    Truck
+    Hatchback
+    Electric
+    Coupe
+
+An **In Stock Only** filter is also available.
+
+The vehicle list dynamically updates based on the selected search and filter criteria.
+
+---
+
+# 📦 Inventory Management
+
+Each vehicle maintains an inventory quantity.
+
+### Purchase
+
+    Quantity = Quantity - Purchase Amount
+
+### Restock
+
+    Quantity = Quantity + Restock Amount
+
+The backend validates inventory operations before updating the database.
+
+---
+
+# 🧪 Testing
+
+Testing was implemented for both the backend and frontend.
+
+## Backend Testing
+
+The backend uses:
+
+- pytest
+- FastAPI TestClient
+
+Backend tests cover areas including:
+
+- Authentication
+- User registration
+- User login
+- Authenticated user retrieval
+- Vehicle creation
+- Vehicle retrieval
+- Vehicle update
+- Vehicle deletion
+- Vehicle inventory operations
+- Authentication protection
+- Validation and error handling
+
+---
+
+## Frontend Testing
+
+The frontend uses:
+
+- Vitest
+- React Testing Library
+
+Tests were implemented for important application pages and components.
+
+The completed frontend test suite includes tests for:
+
+    VehicleList
+    VehicleDetails
+    Authentication-related functionality
+
+The latest completed frontend test run reported:
+
+    Test Files: 3 passed
+    Tests:      18 passed
+
+---
+
+# ✅ Verification
+
+After starting the application, verify the following.
+
+## Frontend
 
 Open:
 
-```text
-http://localhost:5173
-```
+    http://localhost:5173
 
-The React application should load successfully.
+The React application should load.
 
-### Backend
+## Backend
 
 Open:
 
-```text
-http://127.0.0.1:8000
-```
+    http://127.0.0.1:8000
 
 The FastAPI application should respond.
 
-### API Documentation
+## Swagger
 
 Open:
 
-```text
-http://127.0.0.1:8000/docs
-```
+    http://127.0.0.1:8000/docs
 
-Swagger UI should load successfully.
+Swagger UI should display the available API endpoints.
 
-### Database
+## Database
 
-Verify that:
+Verify:
 
 - PostgreSQL is running.
-- The `car_dealership` database exists.
-- The database credentials are correct.
-- The `DATABASE_URL` is correctly configured.
-- The backend can connect to PostgreSQL.
+- `car_dealership` database exists.
+- Database credentials are correct.
+- `DATABASE_URL` is configured correctly.
+- FastAPI can connect to PostgreSQL.
 
 ---
 
-# Troubleshooting
+# 🧪 Manual Functional Verification
+
+The following application flows were verified during development:
+
+### Authentication
+
+- User registration
+- User login
+- JWT authentication
+- `/me` authentication
+- Protected routes
+- Logout
+- Invalid/missing token handling
+
+### Vehicle Management
+
+- View vehicle list
+- View vehicle details
+- Add vehicle
+- Update vehicle
+- Delete vehicle
+- Search vehicles
+- Filter vehicles
+- Purchase vehicle
+- Restock vehicle
+
+### Inventory
+
+- Quantity updates after purchase
+- Quantity updates after restock
+- Validation for inventory operations
+- Prevention of invalid inventory values
+
+---
+
+# 🛠️ Troubleshooting
 
 ## Python Virtual Environment Not Activating
 
-For Windows Command Prompt:
+### Command Prompt
 
-```bash
-.venv\Scripts\activate
-```
+    .venv\Scripts\activate
 
-For PowerShell:
+### PowerShell
 
-```powershell
-.venv\Scripts\Activate.ps1
-```
+    .venv\Scripts\Activate.ps1
 
 ---
 
-## Backend Dependencies Are Missing
-
-Make sure the virtual environment is activated:
-
-```bash
-.venv\Scripts\activate
-```
-
-Then run:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## Backend Server Is Not Starting
-
-Verify that you are inside the `server-side` directory:
-
-```bash
-cd server-side
-```
+## Backend Dependencies Missing
 
 Activate the virtual environment:
 
-```bash
-.venv\Scripts\activate
-```
+    .venv\Scripts\activate
 
-Then run:
+Then:
 
-```bash
-uvicorn app.main:app --reload
-```
+    pip install -r requirements.txt
 
 ---
 
-## Frontend Dependencies Are Missing
+## Backend Server Not Starting
 
-Navigate to the frontend directory:
+Verify the current directory:
 
-```bash
-cd client-side
-```
+    cd server-side
+
+Activate the environment:
+
+    .venv\Scripts\activate
+
+Start FastAPI:
+
+    uvicorn app.main:app --reload
+
+---
+
+## Frontend Dependencies Missing
+
+Navigate to:
+
+    cd client-side
 
 Install dependencies:
 
-```bash
-npm install
-```
+    npm install
 
-Then start the development server:
+Start the application:
 
-```bash
-npm run dev
-```
+    npm run dev
 
 ---
 
-## Node.js or npm Is Not Recognized
+## Node.js or npm Not Recognized
 
-Verify the installation:
+Check:
 
-```bash
-node --version
-npm --version
-```
+    node --version
+    npm --version
 
-If either command is not recognized, install Node.js and restart the terminal.
+If either command is unavailable, install Node.js and restart the terminal.
 
 ---
 
 ## PostgreSQL Connection Error
 
-Check the following:
+Check:
 
 - PostgreSQL is running.
 - The database exists.
-- The PostgreSQL username is correct.
-- The PostgreSQL password is correct.
-- The database name is correct.
-- The `DATABASE_URL` is correctly configured.
-- The `.env` file is located inside `server-side`.
+- Username is correct.
+- Password is correct.
+- Port is correct.
+- Database name is correct.
+- `.env` exists inside `server-side`.
+- `DATABASE_URL` is correct.
 
 Example:
 
-```env
-DATABASE_URL=postgresql://username:password@localhost:5432/car_dealership
-```
+    DATABASE_URL=postgresql://username:password@localhost:5432/car_dealership
 
 ---
 
-# Stopping the Development Servers
+# 🛑 Stopping the Application
 
-To stop the frontend or backend development server, press:
+To stop either development server:
 
-```text
-Ctrl + C
-```
+    Ctrl + C
 
-in the corresponding terminal.
+Press `Ctrl + C` in the corresponding terminal.
 
 ---
 
-# Quick Start
+# ⚡ Quick Start
 
-After the initial setup is completed, the application can be started using two terminals.
+After completing the initial setup:
 
-### Terminal 1 - Backend
+## Backend
 
-```bash
-cd car-dealership-inventory/server-side
-.venv\Scripts\activate
-uvicorn app.main:app --reload
-```
+    cd car-dealership-inventory/server-side
+    .venv\Scripts\activate
+    uvicorn app.main:app --reload
 
-### Terminal 2 - Frontend
+## Frontend
 
-```bash
-cd car-dealership-inventory/client-side
-npm run dev
-```
+Open another terminal:
+
+    cd car-dealership-inventory/client-side
+    npm run dev
 
 Then open:
 
-```text
-Frontend: http://localhost:5173
-Backend: http://127.0.0.1:8000
-API Docs: http://127.0.0.1:8000/docs
-```
+    Frontend:
+    http://localhost:5173
+
+    Backend:
+    http://127.0.0.1:8000
+
+    API Documentation:
+    http://127.0.0.1:8000/docs
 
 ---
 
-## Screenshots
+# 📸 Screenshots
 
-Screenshots of the final application will be added here.
+Screenshots can be added to this section to demonstrate the completed application.
 
-### Dashboard
+## Login
 
-_Add screenshot here after the application UI is completed._
+*Add the final login page screenshot here.*
 
-### Inventory
+## Register
 
-_Add screenshot here after the inventory interface is completed._
+*Add the registration page screenshot here.*
 
-### Add Vehicle
+## Dashboard
 
-_Add screenshot here after the vehicle form is completed._
+*Add the dashboard screenshot here.*
 
----
+## Vehicle Catalog
 
-## Testing
+*Add the vehicle inventory screenshot here.*
 
-Automated tests will be added for the backend APIs and frontend functionality.
+## Vehicle Details
 
-The final test report will include:
+*Add the vehicle details screenshot here.*
 
-- Number of tests executed
-- Number of tests passed
-- Number of tests failed
-- Test coverage
-- Important test cases
+## Add Vehicle
 
-A detailed test report will be added after the test suite is implemented.
+*Add the add vehicle form screenshot here.*
 
 ---
 
-## My AI Usage
+# 📈 Development Phases
 
+The project was developed incrementally through multiple phases.
 
-The AI assistance from chatgpt included:
-
-- Project setup guidance and initialization
-- fastapi - postgre connection setup
+    Phase 1
+    PostgreSQL Setup
+            ↓
+    Phase 2
+    FastAPI ↔ PostgreSQL Connection
+            ↓
+    Phase 3
+    Database Models
+            ↓
+    Phase 4
+    Authentication
+            ↓
+    Phase 5
+    Vehicle CRUD APIs
+            ↓
+    Phase 6
+    Backend Validation & Error Handling
+            ↓
+    Phase 7
+    Backend Testing
+            ↓
+    Phase 8
+    API & Inventory Functionality
+            ↓
+    Phase 9
+    React Authentication
+            ↓
+    Phase 10
+    React Vehicle Management
+            ↓
+    Phase 11
+    Vehicle Management UI Improvements
+            ↓
+    Phase 12
+    Testing, Integration & Finalization
 
 ---
 
-## License
+# 📚 Key Concepts Demonstrated
+
+This project demonstrates practical implementation of:
+
+- Full-stack web development
+- REST API development
+- React component architecture
+- FastAPI application development
+- PostgreSQL database integration
+- CRUD operations
+- JWT authentication
+- Protected routes
+- API authorization
+- Form validation
+- Error handling
+- Inventory management
+- Search and filtering
+- Automated testing
+- Frontend-backend integration
+- Git and GitHub workflow
+
+---
+
+# 🔒 Security Considerations
+
+The application follows basic security practices including:
+
+- Password hashing
+- JWT-based authentication
+- Protected API endpoints
+- Authentication validation
+- Environment variables for sensitive configuration
+- `.env` excluded from version control
+- Input validation using backend schemas
+
+Sensitive credentials should never be committed to the repository.
+
+---
+
+# 🌱 Future Improvements
+
+Potential future improvements include:
+
+- Role-based access control
+- Admin dashboard
+- Vehicle image uploads
+- Advanced inventory reports
+- Sales history
+- Purchase history
+- Pagination
+- Sorting
+- Advanced analytics
+- Deployment using cloud services
+- Docker containerization
+- CI/CD pipeline
+- Production database configuration
+
+---
+
+# 🤖 My AI Usage
+
+AI assistance from **ChatGPT** was used during the development of this project for:
+
+- Project planning and phase breakdown
+- FastAPI project setup guidance
+- PostgreSQL connection setup
+- Database and API design guidance
+- Authentication and JWT implementation guidance
+- React frontend development guidance
+- API integration guidance
+- Debugging frontend and backend issues
+- Error diagnosis and troubleshooting
+- Test case development guidance
+- pytest and frontend testing guidance
+- UI improvement suggestions
+- README documentation
+- Understanding technical concepts
+- Reviewing implementation steps
+
+AI was used as a development and learning assistant. The project implementation, integration, testing, debugging, and verification were performed as part of the development process.
+
+---
+
+# 📄 License
 
 This project was developed as part of an assessment/project submission.
+
+---
+
+# 👩‍💻 Author
+
+**Adithi Reddy**
+
+B.Tech — Information Technology
+
+---
+
+# ⭐ Project Summary
+
+The **Car Dealership Inventory Management System** is a full-stack inventory application that combines a React frontend, FastAPI backend, and PostgreSQL database.
+
+The completed system provides authenticated users with the ability to manage dealership vehicle inventory through a responsive web interface, including CRUD operations, search and filtering, purchasing, restocking, authentication, validation, and automated testing.
+
+    React + Vite
+          ↓
+    FastAPI REST API
+          ↓
+    JWT Authentication
+          ↓
+    PostgreSQL
+
+**Status: ✅ Phase 12 Completed**
